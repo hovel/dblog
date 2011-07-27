@@ -52,11 +52,11 @@ class PostUpdate(generic.UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(PostCreate, self).dispatch(*args, **kwargs)
+        return super(PostUpdate, self).dispatch(*args, **kwargs)
 
 class PostDelete(generic.DeleteView):
     model = Post
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(PostCreate, self).dispatch(*args, **kwargs)
+        return super(PostDelete, self).dispatch(*args, **kwargs)
