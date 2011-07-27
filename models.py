@@ -24,7 +24,7 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     changed = models.DateTimeField(auto_now=True, verbose_name=_('Changed'))
     is_draft = models.BooleanField(default=True, verbose_name=_('Is draft'))
-    is_promote = models.BooleanField(default=False, verbose_name=_('Is promoted'))
+    is_promoted = models.BooleanField(default=False, verbose_name=_('Is promoted'))
 
     class Meta:
         ordering = ['-created',]

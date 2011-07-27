@@ -15,3 +15,7 @@ class PostForm(forms.ModelForm):
 class PostDeleteForm(forms.Form):
     pass
 
+class PostPromoteForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'body', 'is_draft', 'is_promoted',)
