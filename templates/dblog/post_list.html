@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{object}} - {{block.super}}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Blogs" %}</h1>
+<a href="{% url post:create %}">{% trans "Create post entry" %}</a>
+<ul class="posts">
+{% for object in object_list %}
+<li>
+<h2><a href="{% url post:detail object.id %}">{{object}}</a>
+<span class="published">{{object.created|date:"SHORT_DATE_FORMAT"}}</span></h2>
+{{object.body_html|safe|truncatewords_html:30}}
+</li>
+{% endfor %}
+</ul>
+
+{% include 'paginator.html' %}
+
+{% endblock %}

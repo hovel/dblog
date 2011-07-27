@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{object}} - {{block.super}}{% endblock %}
+
+{% block content %}
+<h1>{{object}}</h1>
+{% if user == object.author %}
+<a href="{% url post:update object.id %}">{% trans "Update post entry" %}</a>
+{% endif %}
+{{object.body_html|safe}}
+<div class="meta">
+{{object.created|date:"SHORT_DATETIME_FORMAT"}}
+by <a href="{% url profile:detail object.author.id %}">{{object.author}}</a>
+</div>
+{% endblock %}
