@@ -6,15 +6,14 @@
 {% block content %}
 <h1>{{object}}</h1>
 
-{% if user == object.author %}
-<a href="{% url post:update object.id %}">{% trans "Update post entry" %}</a>
+{% if perms.post.can_manage %}
+<a href="{% url post:manage object.id %}">{% trans "Manage post" %}</a>
+{% else %}
+    {%if user == object.author %}
+    <a href="{% url post:update object.id %}">{% trans "Update post entry" %}</a>
+    {% endif %}
 {% endif %}
 
-{% if object.is_promoted %}
-<a href="{% url post:demote object.id %}">{% trans "Demote post" %}</a>
-{% else %}
-<a href="{% url post:promote object.id %}">{% trans "Promote post" %}</a>
-{% endif %}
 
 {{object.body_html|safe}}
 

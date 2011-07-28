@@ -7,8 +7,8 @@ from django.shortcuts import get_object_or_404
 
 from django.views import generic
 
-from dblog.models import Blog, Post
-from dblog.forms import BlogForm, PostForm, PostDeleteForm, PostPromoteForm
+from dblog.models import Post, Blog
+from dblog.forms import *
 
 class BlogDetail(generic.DetailView):
     model = Blog
@@ -61,30 +61,5 @@ class PostDelete(generic.DeleteView):
     def dispatch(self, *args, **kwargs):
         return super(PostDelete, self).dispatch(*args, **kwargs)
 
-class PostPromote(generic.UpdateView):
-    model = Post
-    form_class = PostPromoteForm
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(PostPromote, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        self.object = self.get_object()
-        self.object.is_promoted = True
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
-
-class PostDemote(generic.UpdateView):
-    model = Post
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(PostDemote, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        self.object = self.get_object()
-        self.object.is_promoted = False
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
-
+class PostManage(PostUpdate):
+    form_class = PostManageForm

@@ -44,7 +44,8 @@ tagging.register(Post)
 
 def create_blog(sender, instance, created, *args, **kwargs):
     if created:
-        blog = Blog(author=instance, title=_('My blog'))
+        title = instance.username + '\'s ' + _('blog')
+        blog = Blog(author=instance, title=title)
         blog.save()
 
 models.signals.post_save.connect(create_blog, sender=User)
