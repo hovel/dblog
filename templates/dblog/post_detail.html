@@ -14,12 +14,11 @@
     {% endif %}
 {% endif %}
 
-
 {{object.body_html|safe}}
 
 <div class="meta">
-{{object.created|date:"SHORT_DATETIME_FORMAT"}}
-by <a href="{% url profile:detail object.author.id %}">{{object.author}}</a>
+{% trans "Posted" %}: {{object.created|date:"SHORT_DATETIME_FORMAT"}}
+{% trans "Author" %}: <a href="{% url profile:detail object.author.id %}">{{object.author}}</a>
 </div>
 
 {% endblock %}

@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{{object}} - {{block.super}}{% endblock %}
+{% block title %}{% trans "Posts" %} - {{block.super}}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Blogs" %}</h1>
-<a href="{% url post:create %}">{% trans "Create post entry" %}</a>
+<h1>{{title}}</h1>
+{% if user.is_authentificated %}
+    <a href="{% url post:create %}">{% trans "Create post entry" %}</a>
+{% endif %}
 <ul class="posts">
 {% for object in object_list %}
 <li>

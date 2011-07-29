@@ -28,6 +28,10 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-created',]
+        permissions = (
+            ('view_draft_posts', 'Can view draft posts'),
+            ('manage_posts', 'Can manage posts'),
+        )
 
     def __unicode__(self):
         return self.title
