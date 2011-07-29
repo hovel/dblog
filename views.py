@@ -28,7 +28,7 @@ class BlogUpdate(generic.UpdateView):
 
     def get_object(self, *args, **kwargs):
         self.object = super(BlogUpdate, self).get_object(*args, **kwargs)
-        if not self.object.author == self.request.user or \
+        if not self.object.author.id == self.request.user.id or \
             not self.request.user.has_perm('dblog.can_manage'):
             raise Http404
         return self.object
@@ -83,13 +83,13 @@ class PostDraftsList(generic.ListView):
     paginated_by = 30
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm('dblog.view_draft_posts'):
             return Http404
-        return super(PostDraftsList, self).dispatch(*args, **kwargs)
+        return super(PostDraftsList, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(PostList, self).get_context_data(**kwargs)
+        context = super(PostDraftsList, self).get_context_data(**kwargs)
         context['title'] = _('Draft posts')
         return context
 
@@ -120,6 +120,8 @@ class PostUpdate(generic.UpdateView):
 
     def get_object(self, *args, **kwargs):
         self.object = super(PostUpdate, self).get_object(*args, **kwargs)
+        if not self.object.is_draft:
+            self.form_class = PostPromotedForm
         if not self.object.author == self.request.user:
             raise Http404
         return self.object
@@ -136,8 +138,8 @@ class PostManage(generic.UpdateView):
     form_class = PostManageForm
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        if not self.request.user.has_perm('dblog.manage_post'):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('dblog.manage_post'):
             raise Http404
-        return super(PostManage, self).dispatch(*args, **kwargs)
+        return super(PostManage, self).dispatch(request, *args, **kwargs)
 

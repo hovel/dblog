@@ -1,5 +1,10 @@
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.comments.moderation import CommentModerator, moderator
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
 from django.db import models
+from django.template import Context, loader
 from django.utils.translation import ugettext as _
 
 from markdown import markdown
@@ -25,6 +30,7 @@ class Post(models.Model):
     changed = models.DateTimeField(auto_now=True, verbose_name=_('Changed'))
     is_draft = models.BooleanField(default=True, verbose_name=_('Is draft'))
     is_promoted = models.BooleanField(default=False, verbose_name=_('Is promoted'))
+    enable_comments = models.BooleanField(default=True, verbose_name=_('Enable comments'))
 
     class Meta:
         ordering = ['-created',]
@@ -44,6 +50,27 @@ class Post(models.Model):
         self.body_html = markdown(self.body, safe_mode='remove')
         super(Post, self).save(*args, **kwargs)
 
+class PostModerator(CommentModerator):
+    email_notification = True
+    enable_field = 'enable_comments'
+
+    def email(self, comment, content_object, request):
+        if self.email_notification:
+            recipient = [content_object.author.email,]
+            site = Site.objects.get_current()
+            t = loader.get_template('comments/comment_notification_email.txt')
+            c = Context({ 'comment': comment,
+                        'site': site,
+                        'content_object': content_object })
+            subject = '[%s] %s "%s"' % (site.name,
+                _('New comment posted on'), content_object)
+            message = t.render(c)
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
+                recipient, fail_silently=True)
+            
+
+moderator.register(Post, PostModerator)
+
 tagging.register(Post)
 
 def create_blog(sender, instance, created, *args, **kwargs):
@@ -53,3 +80,19 @@ def create_blog(sender, instance, created, *args, **kwargs):
         blog.save()
 
 models.signals.post_save.connect(create_blog, sender=User)
+
+def post_notify_managers(sender, instance, created, *args, **kwars):
+    if not instance.is_draft:
+        recipients = settings.MANAGERS
+        site = Site.objects.get_current()
+        subject = '[%s] %s: "%s"' % (site.name,
+            _('New post published'), instance)
+        t = loader.get_template('dblog/post_notification_email.txt')
+        c = Context({ 'instance': instance,
+                    'site': site})
+        message = t.render(c)
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
+                recipients, fail_silently=True)
+                
+models.signals.post_save.connect(post_notify_managers, sender=Post)
+
