@@ -8,7 +8,8 @@ from django.template import Context, loader
 from django.utils.translation import ugettext as _
 
 from markdown import markdown
-import tagging
+from tagging.fields import TagField
+from tagging.models import Tag
 
 class Blog(models.Model):
     author = models.ForeignKey('auth.User')
@@ -26,6 +27,7 @@ class Post(models.Model):
     title = models.CharField(max_length=64, verbose_name=_('Title'))
     body = models.TextField(verbose_name=_('Body'))
     body_html = models.TextField(verbose_name=_('Body HTML'))
+    tags = TagField()
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     changed = models.DateTimeField(auto_now=True, verbose_name=_('Changed'))
     is_draft = models.BooleanField(default=True, verbose_name=_('Is draft'))
@@ -50,6 +52,12 @@ class Post(models.Model):
         self.body_html = markdown(self.body, safe_mode='remove')
         super(Post, self).save(*args, **kwargs)
 
+    def set_tags(self, tags):
+        Tag.objects.update_tags(self, tags)
+
+    def get_tags(self):
+        return Tag.objects.get_for_object(self)
+
 class PostModerator(CommentModerator):
     email_notification = True
     enable_field = 'enable_comments'
@@ -68,19 +76,18 @@ class PostModerator(CommentModerator):
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                 recipient, fail_silently=True)
             
-
+# Comments moderation
 moderator.register(Post, PostModerator)
 
-tagging.register(Post)
-
+# Create a blog for every new user
 def create_blog(sender, instance, created, *args, **kwargs):
     if created:
         title = instance.username + '\'s ' + _('blog')
         blog = Blog(author=instance, title=title)
         blog.save()
-
 models.signals.post_save.connect(create_blog, sender=User)
 
+# Notify managaers when user post published
 def post_notify_managers(sender, instance, created, *args, **kwars):
     if not instance.is_draft:
         recipients = settings.MANAGERS
@@ -93,6 +100,5 @@ def post_notify_managers(sender, instance, created, *args, **kwars):
         message = t.render(c)
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                 recipients, fail_silently=True)
-                
 models.signals.post_save.connect(post_notify_managers, sender=Post)
 

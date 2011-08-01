@@ -10,12 +10,12 @@ class BlogForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'body', 'is_draft', 'enable_comments', )
+        fields = ('title', 'body', 'tags', 'is_draft', 'enable_comments', )
 
 class PostPromotedForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'body', 'enable_comments', )
+        fields = ('title', 'body', 'tags', 'enable_comments', )
 
 class PostDeleteForm(forms.Form):
     pass

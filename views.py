@@ -5,11 +5,12 @@ from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
-
 from django.views import generic
 
 from dblog.models import Post, Blog
 from dblog.forms import *
+
+from tagging.models import Tag
 
 class BlogDetail(generic.DetailView):
     model = Blog
@@ -92,6 +93,21 @@ class PostDraftsList(generic.ListView):
         context = super(PostDraftsList, self).get_context_data(**kwargs)
         context['title'] = _('Draft posts')
         return context
+
+class PostTaggedList(generic.ListView):
+    paginated_by = 30
+
+    def get_queryset(self):
+        self.tag = get_object_or_404(Tag, name=self.kwargs.get('tag'))
+        qs = Tag.get_by_model(Post.objects.filter(is_draft=False), self.tag)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(PostTaggedList, self).get_context_data(**kwargs)
+        context['title'] = ' '.join([_('Posts tagged by'), self.tag])
+        context['tag'] = self.tag
+        return context
+
 
 class PostDetail(generic.DetailView):
     model = Post
