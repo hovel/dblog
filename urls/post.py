@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.views.generic import TemplateView
 
 from dblog.views import *
 from dblog.models import Post
@@ -13,6 +14,7 @@ urlpatterns = patterns('',
     (r'^(?P<pk>\d+)/update/$', PostUpdate.as_view(), None, 'update'),
     (r'^(?P<pk>\d+)/delete/$', PostDelete.as_view(), None, 'delete'),
     (r'^(?P<pk>\d+)/manage/$', PostManage.as_view(), None, 'manage'),
-    (r'^tag/(?P<tag>[^/]+)/$', PostTaggedList.as_view(), None, 'tagged'),
+    (r'^tags/$', TemplateView.as_view(template_name='dblog/tags.html'), None, 'tags'),
+    (r'^tags/(?P<tag>[^/]+)/$', PostTaggedList.as_view(), None, 'tagged'),
 )
 

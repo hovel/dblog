@@ -10,14 +10,14 @@ from django.views import generic
 from dblog.models import Post, Blog
 from dblog.forms import *
 
-from tagging.models import Tag
+from tagging.models import Tag, TaggedItem
 
 class BlogDetail(generic.DetailView):
     model = Blog
 
 class BlogList(generic.ListView):
     model = Blog
-    paginated_by = 30
+    paginate_by = 30
 
 class BlogUpdate(generic.UpdateView):
     model = Blog
@@ -29,14 +29,14 @@ class BlogUpdate(generic.UpdateView):
 
     def get_object(self, *args, **kwargs):
         self.object = super(BlogUpdate, self).get_object(*args, **kwargs)
-        if not self.object.author.id == self.request.user.id or \
+        if not self.object.author.id == self.request.user.id and \
             not self.request.user.has_perm('dblog.can_manage'):
             raise Http404
         return self.object
 
 
 class BlogPostList(generic.ListView):
-    paginated_by = 30
+    paginate_by = 30
 
     def get_queryset(self):
         self.blog = get_object_or_404(Blog, id=self.kwargs.get('pk'))
@@ -50,7 +50,7 @@ class BlogPostList(generic.ListView):
         return context
 
 class BlogPostDraftsList(generic.ListView):
-    paginated_by = 30
+    paginate_by = 30
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -58,7 +58,7 @@ class BlogPostDraftsList(generic.ListView):
 
     def get_queryset(self):
         self.blog = get_object_or_404(Blog, id=self.kwargs.get('pk'))
-        if not self.blog.author == self.request.user or \
+        if not self.blog.author == self.request.user and \
             not self.request.user.has_perm('dblog.view_draft_posts'):
             raise Http404
         queryset = Post.objects.filter(author=self.blog.author, is_draft=True)
@@ -72,7 +72,7 @@ class BlogPostDraftsList(generic.ListView):
 
 class PostList(generic.ListView):
     queryset = Post.objects.filter(is_draft=False)
-    paginated_by = 30
+    paginate_by = 30
 
     def get_context_data(self, **kwargs):
         context = super(PostList, self).get_context_data(**kwargs)
@@ -81,7 +81,7 @@ class PostList(generic.ListView):
 
 class PostDraftsList(generic.ListView):
     queryset = Post.objects.filter(is_draft=True)
-    paginated_by = 30
+    paginate_by = 30
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -95,16 +95,17 @@ class PostDraftsList(generic.ListView):
         return context
 
 class PostTaggedList(generic.ListView):
-    paginated_by = 30
+    paginate_by = 30
 
     def get_queryset(self):
         self.tag = get_object_or_404(Tag, name=self.kwargs.get('tag'))
-        qs = Tag.get_by_model(Post.objects.filter(is_draft=False), self.tag)
+        posts = Post.objects.filter(is_draft=False)
+        qs = TaggedItem.objects.get_by_model(posts, self.tag)
         return qs
 
     def get_context_data(self, **kwargs):
         context = super(PostTaggedList, self).get_context_data(**kwargs)
-        context['title'] = ' '.join([_('Posts tagged by'), self.tag])
+        context['title'] = ' '.join([_('Posts tagged by'), self.tag.name])
         context['tag'] = self.tag
         return context
 
