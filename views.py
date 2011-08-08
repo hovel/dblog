@@ -71,7 +71,7 @@ class BlogPostDraftsList(generic.ListView):
         return context
 
 class PostList(generic.ListView):
-    queryset = Post.objects.filter(is_draft=False)
+    queryset = Post.objects.filter(is_draft=False, is_promoted=True)
     paginate_by = 30
 
     def get_context_data(self, **kwargs):
@@ -147,8 +147,10 @@ class PostDelete(generic.DeleteView):
     model = Post
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(PostDelete, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('dblog.delete_post'):
+            raise Http404
+        return super(PostDelete, self).dispatch(request, *args, **kwargs)
 
 class PostManage(generic.UpdateView):
     model = Post
