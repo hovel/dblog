@@ -1,6 +1,6 @@
-recursive-include urls *
-recursive-include migrations *
-recursive-include templates *
-recursive-include templatetags *
-recursive-include fixtures *
-recursive-include locale *
+recursive-include dblog/urls *
+recursive-include dblog/migrations *
+recursive-include dblog/templates *
+recursive-include dblog/templatetags *
+recursive-include dblog/fixtures *
+recursive-include dblog/locale *
