@@ -12,11 +12,17 @@ def last_promoted(count):
     posts = Post.objects.filter(is_draft=False, is_promoted=True)[:count]
     return {'posts': posts}
 
+@register.inclusion_tag('dblog/last_posts.html')
+def last_posts(count):
+    count = int(count)
+    posts = Post.objects.filter(is_draft=False)[:count]
+    return {'posts': posts}
+
 @register.inclusion_tag('dblog/last_user_posts.html')
 def last_user_posts(count, user):
     count = int(count)
     posts = Post.objects.filter(author=user,
-        is_draft=False, is_promoted=True)[:count]
+        is_draft=False)[:count]
     return {'posts': posts}
 
 
