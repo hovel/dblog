@@ -1,5 +1,6 @@
 recursive-include urls *
 recursive-include migrations *
 recursive-include templates *
+recursive-include templatetags *
 recursive-include fixtures *
 recursive-include locale *
