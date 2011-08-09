@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
 name = 'dblog',
-version = '1.0',
+version = '1.1',
 package_dir = {'dblog': 'dblog'},
 package_data = {'': [
     'templatetags/*',
