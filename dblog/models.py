@@ -12,7 +12,7 @@ from tagging.fields import TagField
 from tagging.models import Tag
 
 class Blog(models.Model):
-    author = models.ForeignKey('auth.User')
+    author = models.ForeignKey('auth.User', related_name='blogs')
     title = models.CharField(max_length=64, verbose_name=_('Title'))
 
     def __unicode__(self):
@@ -20,7 +20,7 @@ class Blog(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('blog:detail', [str(self.id), ])
+        return 'blog:detail', [str(self.id), ]
 
 class Post(models.Model):
     author = models.ForeignKey('auth.User', verbose_name=_('Author'))
@@ -33,8 +33,9 @@ class Post(models.Model):
     is_draft = models.BooleanField(default=True, verbose_name=_('Is draft'))
     is_promoted = models.BooleanField(default=False, verbose_name=_('Is promoted'))
     enable_comments = models.BooleanField(default=True, verbose_name=_('Enable comments'))
+    blog = models.ForeignKey(Blog, blank=True, null=True, verbose_name=_('Blog'))
 
-    class Meta:
+    class Meta(object):
         ordering = ['-created',]
         permissions = (
             ('view_draft_posts', 'Can view draft posts'),
@@ -46,7 +47,7 @@ class Post(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('post:detail', [str(self.id),])
+        return 'post:detail', [str(self.id),]
 
     def save(self, *args, **kwargs):
         self.body_html = markdown(self.body, safe_mode='remove')
