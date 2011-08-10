@@ -124,6 +124,7 @@ class PostCreate(generic.CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.author = self.request.user
+        self.object.blog = Blog.objects.get(author=self.request.user)
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 

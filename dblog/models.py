@@ -23,17 +23,29 @@ class Blog(models.Model):
         return 'blog:detail', [str(self.id), ]
 
 class Post(models.Model):
-    author = models.ForeignKey('auth.User', verbose_name=_('Author'))
-    title = models.CharField(max_length=64, verbose_name=_('Title'))
-    body = models.TextField(verbose_name=_('Body'))
-    body_html = models.TextField(verbose_name=_('Body HTML'))
-    tags = TagField()
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    changed = models.DateTimeField(auto_now=True, verbose_name=_('Changed'))
-    is_draft = models.BooleanField(default=True, verbose_name=_('Is draft'))
-    is_promoted = models.BooleanField(default=False, verbose_name=_('Is promoted'))
-    enable_comments = models.BooleanField(default=True, verbose_name=_('Enable comments'))
-    blog = models.ForeignKey(Blog, blank=True, null=True, verbose_name=_('Blog'))
+    author = models.ForeignKey('auth.User', verbose_name=_('Author'),
+        help_text=_('Author association.'))
+    blog = models.ForeignKey(Blog, blank=True, null=True, verbose_name=_('Blog'),
+        help_text=_('Blog association.'))
+    title = models.CharField(max_length=64, verbose_name=_('Title'),
+        help_text=_('Displayed on the browser tab and in the beginning of the article.'))
+    body = models.TextField(verbose_name=_('Body'),
+        help_text=_('For markup syntax markdown.'))
+    body_html = models.TextField(verbose_name=_('Body HTML'),
+        help_text=_('Ready to display text on the page.'))
+    tags = TagField(verbose_name=_('Tags'),
+        help_text=_('Comma separated tags.'))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'),
+        help_text=_('Created time.'))
+    changed = models.DateTimeField(auto_now=True, verbose_name=_('Changed'),
+        help_text=_('Changed time.'))
+    is_draft = models.BooleanField(default=True, verbose_name=_('Is draft'),
+        help_text=_('After publishing, you can not make a post draft.'))
+    is_promoted = models.BooleanField(default=False, verbose_name=_('Is promoted'),
+        help_text=_('Publish this post on front page.'))
+    enable_comments = models.BooleanField(default=True,
+        verbose_name=_('Enable comments'),
+        help_text=_('Allow user to post comments.'))
 
     class Meta(object):
         ordering = ['-created',]
