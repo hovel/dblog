@@ -23,4 +23,4 @@ class PostDeleteForm(forms.Form):
 class PostManageForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ('author', 'body_html',)
+        exclude = ('author', 'body_html', 'blog')
