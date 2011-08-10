@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-from distutils.core import setup, find_packages
+from distutils.core import setup
 
 setup(
 name = 'dblog',
 version = '1.1',
-packages = find_packages(),
-include_package_data = True,
+packages = ['dblog'],
+package_dir={'dblog': 'dblog'},
 package_data = {'dblog': [
     'templatetags/*',
     'urls/*',
