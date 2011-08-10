@@ -12,8 +12,10 @@ from tagging.fields import TagField
 from tagging.models import Tag
 
 class Blog(models.Model):
-    author = models.ForeignKey('auth.User')
-    title = models.CharField(max_length=64, verbose_name=_('Title'))
+    author = models.ForeignKey('auth.User', verbose_name=_('Author'),
+        help_text=_('Author association.'))
+    title = models.CharField(max_length=64, verbose_name=_('Title'),
+        help_text=_('Your blog name.'))
 
     def __unicode__(self):
         return self.title
