@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from django.views.generic import TemplateView
 
-from dblog.feeds import LatestPostsFeed
+#from dblog.feeds import LatestPostsFeed
 from dblog.models import Post
 from dblog.views import *
 
@@ -9,7 +9,7 @@ from tagging.views import tagged_object_list
 
 urlpatterns = patterns('',
     (r'^$', PostList.as_view(), None, 'promoted'),
-    (r'^feed/$', LatestPostsFeed(), None, 'feed' ),
+    #(r'^feed/$', LatestPostsFeed(), None, 'feed' ),
     (r'^drafts/$', PostDraftsList.as_view(), None, 'drafts'),
     (r'^create/$', PostCreate.as_view(), None, 'create'),
     (r'^(?P<pk>\d+)/$', PostDetail.as_view(), None, 'detail'),
