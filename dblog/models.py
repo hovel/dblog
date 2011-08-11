@@ -90,6 +90,11 @@ class PostModerator(CommentModerator):
             message = t.render(c)
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                 recipient, fail_silently=True)
+
+    def moderate(self, comment, content_object, request):
+        if request.user == content_object.author:
+            return False
+        return True
             
 # Comments moderation
 moderator.register(Post, PostModerator)
