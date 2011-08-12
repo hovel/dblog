@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseForbidden, Http404
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -11,9 +12,6 @@ from dblog.models import Post, Blog
 from dblog.forms import *
 
 from tagging.models import Tag, TaggedItem
-
-class BlogDetail(generic.DetailView):
-    model = Blog
 
 class BlogList(generic.ListView):
     model = Blog
@@ -30,10 +28,9 @@ class BlogUpdate(generic.UpdateView):
     def get_object(self, *args, **kwargs):
         self.object = super(BlogUpdate, self).get_object(*args, **kwargs)
         if not self.object.author.id == self.request.user.id and \
-            not self.request.user.has_perm('dblog.can_manage'):
+            not self.request.user.has_perm('dblog.change_blog'):
             raise Http404
         return self.object
-
 
 class BlogPostList(generic.ListView):
     paginate_by = 30
@@ -58,8 +55,7 @@ class BlogPostDraftsList(generic.ListView):
 
     def get_queryset(self):
         self.blog = get_object_or_404(Blog, id=self.kwargs.get('pk'))
-        if not self.blog.author == self.request.user and \
-            not self.request.user.has_perm('dblog.view_draft_posts'):
+        if not self.blog.author == self.request.user:
             raise Http404
         queryset = Post.objects.filter(author=self.blog.author, is_draft=True)
         return queryset
@@ -79,21 +75,6 @@ class PostList(generic.ListView):
         context['title'] = _('Posts')
         return context
 
-class PostDraftsList(generic.ListView):
-    queryset = Post.objects.filter(is_draft=True)
-    paginate_by = 30
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('dblog.view_draft_posts'):
-            return Http404
-        return super(PostDraftsList, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(PostDraftsList, self).get_context_data(**kwargs)
-        context['title'] = _('Draft posts')
-        return context
-
 class PostTaggedList(generic.ListView):
     paginate_by = 30
 
@@ -108,7 +89,6 @@ class PostTaggedList(generic.ListView):
         context['title'] = ' '.join([_('Posts tagged by'), self.tag.name])
         context['tag'] = self.tag
         return context
-
 
 class PostDetail(generic.DetailView):
     model = Post
@@ -149,9 +129,15 @@ class PostDelete(generic.DeleteView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('dblog.delete_post'):
-            raise Http404
         return super(PostDelete, self).dispatch(request, *args, **kwargs)
+
+    def get_object(self, *args, **kwargs):
+        self.object = super(PostDelete, self).get_object(*args, **kwargs)
+        self.success_url = reverse('blog:detail', args=[self.object.author.blog.id])
+        if not self.object.author.id == self.request.user.id and \
+            not self.request.user.has_perm('dblog.delete_post'):
+            raise Http404
+        return self.object
 
 class PostManage(generic.UpdateView):
     model = Post
@@ -159,7 +145,7 @@ class PostManage(generic.UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('dblog.manage_post'):
+        if not request.user.has_perm('dblog.change_post'):
             raise Http404
         return super(PostManage, self).dispatch(request, *args, **kwargs)
 

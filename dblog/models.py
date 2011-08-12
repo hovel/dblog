@@ -12,7 +12,7 @@ from tagging.fields import TagField
 from tagging.models import Tag
 
 class Blog(models.Model):
-    author = models.ForeignKey('auth.User', verbose_name=_('Author'),
+    author = models.OneToOneField('auth.User', verbose_name=_('Author'),
         help_text=_('Author association.'))
     title = models.CharField(max_length=64, verbose_name=_('Title'),
         help_text=_('Your blog name.'))
@@ -52,8 +52,7 @@ class Post(models.Model):
     class Meta(object):
         ordering = ['-created',]
         permissions = (
-            ('view_draft_posts', 'Can view draft posts'),
-            ('manage_posts', 'Can manage posts'),
+            ('manage_post', 'Can manage post'),
         )
 
     def __unicode__(self):
