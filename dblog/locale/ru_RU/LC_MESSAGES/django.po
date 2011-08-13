@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-10 11:24+0400\n"
-"PO-Revision-Date: 2011-08-10 11:32+0400\n"
+"POT-Creation-Date: 2011-08-13 15:27+0400\n"
+"PO-Revision-Date: 2011-08-13 15:32+0400\n"
 "Last-Translator: Vladimir Korsun <korsun.vladimir@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: \n"
@@ -15,70 +15,134 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: models.py:16 models.py:27
-msgid "Title"
-msgstr "Название"
+#: feeds.py:8
+#, fuzzy
+msgid "Latest published posts"
+msgstr "Новая запись опубликована"
 
-#: models.py:26 templates/dblog/post_detail.html:21
+#: feeds.py:10
+msgid "New publications are always with you."
+msgstr "Новые публикации всегда с Вами."
+
+#: models.py:15 models.py:28 templates/dblog/post_detail.html:21
 msgid "Author"
 msgstr "Автор"
 
-#: models.py:28
+#: models.py:16 models.py:29
+msgid "Author association."
+msgstr "Ассоциация с автором."
+
+#: models.py:17 models.py:32
+msgid "Title"
+msgstr "Название"
+
+#: models.py:18
+msgid "Your blog name."
+msgstr "Название Вашего блога."
+
+#: models.py:30
+#, fuzzy
+msgid "Blog"
+msgstr "Блоги"
+
+#: models.py:31
+msgid "Blog association."
+msgstr "Ассоциация с блогом."
+
+#: models.py:33
+msgid "Displayed on the browser tab and in the beginning of the article."
+msgstr "Отображается на вкладке браузера и начале статьи."
+
+#: models.py:34
 msgid "Body"
 msgstr "Текст"
 
-#: models.py:29
+#: models.py:35
+msgid "For markup syntax markdown."
+msgstr "Для разметки используется синтаксис markdown."
+
+#: models.py:36
 msgid "Body HTML"
 msgstr "Текст HTML"
 
-#: models.py:31
+#: models.py:37
+msgid "Ready to display text on the page."
+msgstr "Текст отображаемый на странице."
+
+#: models.py:38
+msgid "Tags"
+msgstr "Тэги"
+
+#: models.py:39
+msgid "Comma separated tags."
+msgstr "Разделенные запятой тэги."
+
+#: models.py:40
 msgid "Created"
 msgstr "Создано"
 
-#: models.py:32
+#: models.py:41
+#, fuzzy
+msgid "Created time."
+msgstr "Создано"
+
+#: models.py:42
 msgid "Changed"
 msgstr "Изменено"
 
-#: models.py:33
+#: models.py:43
+#, fuzzy
+msgid "Changed time."
+msgstr "Изменено"
+
+#: models.py:44
 msgid "Is draft"
 msgstr "Это черновик"
 
-#: models.py:34
+#: models.py:45
+msgid "After publishing, you can not make a post draft."
+msgstr "После публикации Вы не сможете сделать пост черновиком."
+
+#: models.py:46
 msgid "Is promoted"
 msgstr "Продвигать"
 
-#: models.py:35
+#: models.py:47
+msgid "Publish this post on front page."
+msgstr "Опубликовать пост на главной странице."
+
+#: models.py:49
 msgid "Enable comments"
 msgstr "Включить комментарии"
 
-#: models.py:74
+#: models.py:50
+msgid "Allow user to post comments."
+msgstr "Разрешить пользователям оставлять комментарии."
+
+#: models.py:88
 msgid "New comment posted on"
 msgstr "Новый комментарий оставлен для"
 
-#: models.py:85
+#: models.py:104
 msgid "blog"
 msgstr "блог"
 
-#: models.py:96
+#: models.py:115
 msgid "New post published"
 msgstr "Новая запись опубликована"
 
-#: views.py:70
+#: views.py:66
 msgid "Drafts"
 msgstr "Черновики"
 
-#: views.py:79 templates/dblog/post_list.html:4
+#: views.py:75 templates/dblog/post_list.html:4
 msgid "Posts"
 msgstr "Записи"
 
-#: views.py:94
-msgid "Draft posts"
-msgstr "Черновики записей"
-
-#: views.py:108
+#: views.py:89
 msgid "Posts tagged by"
 msgstr "Записи отмеченные"
 
@@ -107,3 +171,5 @@ msgstr "Опубликовано"
 msgid "Post entry form"
 msgstr "Форма записи в блоге"
 
+#~ msgid "Draft posts"
+#~ msgstr "Черновики записей"
