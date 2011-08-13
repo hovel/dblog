@@ -31,7 +31,7 @@ def last_comments(count):
     count = int(count)
     content_type = ContentType.objects.get(app_label='dblog', model='post')
     comments = Comment.objects.filter(content_type=content_type,
-        is_public=True, is_removed=False)[:count]
+        is_public=True, is_removed=False).order_by('-submit_date')[:count]
     return {'comments':comments}
 
 @register.inclusion_tag('dblog/last_comments.html')
@@ -39,5 +39,5 @@ def last_user_comments(count, user):
     count = int(count)
     content_type = ContentType.objects.get(app_label='dblog', model='post')
     comments = Comment.objects.filter(content_type=content_type,
-        is_public=True, is_removed=False, user=user)[:count]
+        is_public=True, is_removed=False, user=user).order_by('-submit_date')[:count]
     return {'comments':comments}
