@@ -97,6 +97,13 @@ class PostTaggedList(generic.ListView):
 class PostDetail(generic.DetailView):
     model = Post
 
+    def get_object(self):
+        self.object = super(PostDetail, self).get_object()
+        if self.object.is_draft:
+            if not self.request.user == self.object.author:
+                raise Http404
+        return self.object
+
 class PostCreate(generic.CreateView):
     model = Post
     form_class = PostForm
