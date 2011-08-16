@@ -170,7 +170,6 @@ class PostTest(TestCase):
         url = reverse('post:detail', args=[self.post.id,])
         response = client.get(url)
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.context['post'], self.post)
 
         url = reverse('post:create')
         response = client.get(url)
@@ -221,7 +220,6 @@ class PostTest(TestCase):
         url = reverse('post:detail', args=[self.post.id,])
         response = client.get(url)
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.context['post'], self.post)
 
         url = reverse('post:create')
         response = client.get(url)
@@ -323,7 +321,6 @@ class PostTest(TestCase):
         url = reverse('post:detail', args=[self.post.id,])
         response = client.get(url)
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.context['post'], self.post)
 
         url = reverse('post:create')
         response = client.get(url)
