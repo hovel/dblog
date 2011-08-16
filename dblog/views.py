@@ -78,8 +78,12 @@ class PostList(generic.ListView):
 class PostTaggedList(generic.ListView):
     paginate_by = 30
 
-    def get_queryset(self):
+    def get_tag(self):
         self.tag = get_object_or_404(Tag, name=self.kwargs.get('tag'))
+        return self.tag
+
+    def get_queryset(self):
+        self.tag = self.get_tag()
         posts = Post.objects.filter(is_draft=False)
         qs = TaggedItem.objects.get_by_model(posts, self.tag)
         return qs
