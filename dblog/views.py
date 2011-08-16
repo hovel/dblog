@@ -128,6 +128,12 @@ class PostUpdate(generic.UpdateView):
             raise Http404
         return self.object
 
+    def get_initial(self):
+        tags = self.object.get_tags()
+        if tags:
+            return dict(tags=','.join([tag.name for tag in tags]))
+        return dict()
+
 class PostDelete(generic.DeleteView):
     model = Post
 
@@ -152,4 +158,10 @@ class PostManage(generic.UpdateView):
         if not request.user.has_perm('dblog.change_post'):
             raise Http404
         return super(PostManage, self).dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        tags = self.object.get_tags()
+        if tags:
+            return dict(tags=','.join([tag.name for tag in tags]))
+        return dict()
 
