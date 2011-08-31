@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.comments.moderation import CommentModerator, moderator
 from django.contrib.sites.models import Site
-from django.core.mail import send_mail
+from django.core.mail import mail_managers
 from django.db import models
 from django.template import Context, loader
 from django.utils.translation import ugettext as _
@@ -117,7 +117,6 @@ def post_notify_managers(sender, instance, created, *args, **kwars):
         c = Context({ 'instance': instance,
                     'site': site})
         message = t.render(c)
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-                recipients, fail_silently=True)
+        mail_managers(subject, message)
 models.signals.post_save.connect(post_notify_managers, sender=Post)
 
