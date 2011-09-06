@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.comments.moderation import CommentModerator, moderator
 from django.contrib.sites.models import Site
-from django.core.mail import mail_managers
+from django.core.mail import mail_managers, send_mail
 from django.db import models
 from django.template import Context, loader
 from django.utils.translation import ugettext as _
