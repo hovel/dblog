@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views import generic
+from pure_pagination import Paginator
 
 from dblog.models import Post, Blog
 from dblog.forms import *
@@ -16,6 +17,7 @@ from tagging.models import Tag, TaggedItem
 class BlogList(generic.ListView):
     model = Blog
     paginate_by = 30
+    paginator_class = Paginator
 
 class BlogUpdate(generic.UpdateView):
     model = Blog
@@ -34,6 +36,7 @@ class BlogUpdate(generic.UpdateView):
 
 class BlogPostList(generic.ListView):
     paginate_by = 30
+    paginator_class = Paginator
 
     def get_queryset(self):
         self.blog = get_object_or_404(Blog, id=self.kwargs.get('pk'))
@@ -48,6 +51,7 @@ class BlogPostList(generic.ListView):
 
 class BlogPostDraftsList(generic.ListView):
     paginate_by = 30
+    paginator_class = Paginator
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -69,6 +73,7 @@ class BlogPostDraftsList(generic.ListView):
 class PostList(generic.ListView):
     queryset = Post.objects.filter(is_draft=False, is_promoted=True)
     paginate_by = 30
+    paginator_class = Paginator
 
     def get_context_data(self, **kwargs):
         context = super(PostList, self).get_context_data(**kwargs)
@@ -77,6 +82,7 @@ class PostList(generic.ListView):
 
 class PostTaggedList(generic.ListView):
     paginate_by = 30
+    paginator_class = Paginator
 
     def get_tag(self):
         self.tag = get_object_or_404(Tag, name=self.kwargs.get('tag'))

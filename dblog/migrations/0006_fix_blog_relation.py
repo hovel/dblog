@@ -9,7 +9,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Changing field 'Blog.author'
-        db.alter_column('dblog_blog', 'author_id', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True))
+        #db.alter_column('dblog_blog', 'author_id', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True))
 
         # Adding unique constraint on 'Blog', fields ['author']
         db.create_unique('dblog_blog', ['author_id'])
@@ -21,7 +21,7 @@ class Migration(SchemaMigration):
         db.delete_unique('dblog_blog', ['author_id'])
 
         # Changing field 'Blog.author'
-        db.alter_column('dblog_blog', 'author_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User']))
+        #db.alter_column('dblog_blog', 'author_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User']))
 
 
     models = {

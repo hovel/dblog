@@ -117,6 +117,6 @@ def post_notify_managers(sender, instance, created, *args, **kwars):
         c = Context({ 'instance': instance,
                     'site': site})
         message = t.render(c)
-        mail_managers(subject, message)
+        mail_managers(subject, message, fail_silently=True)
 models.signals.post_save.connect(post_notify_managers, sender=Post)
 

@@ -9,16 +9,16 @@
 {% if perms.post.can_manage %}
 <a href="{% url post:manage object.id %}">{% trans "Manage post" %}</a>
 {% else %}
-    {%if user == object.author %}
+    {% if user == object.author %}
     <a href="{% url post:update object.id %}">{% trans "Update post entry" %}</a>
     {% endif %}
 {% endif %}
 
-{{object.body_html|safe}}
+{{ object.body_html|safe }}
 
 <div class="meta">
 {% trans "Posted" %}: {{object.created|date:"SHORT_DATETIME_FORMAT"}}
-{% trans "Author" %}: <a href="{% url profile:detail object.author.id %}">{{object.author}}</a>
+{% trans "Author" %}: <a href="{{ object.author.get_profile.get_absolute_url }}">{{ object.author }}</a>
 </div>
 
 {% endblock %}

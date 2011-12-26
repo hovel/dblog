@@ -5,6 +5,7 @@ from django.test.client import Client
 
 from dblog.models import Blog, Post
 from dblog.forms import *
+from django.utils.translation import ugettext as _
 
 
 class BlogTest(TestCase):
@@ -19,7 +20,6 @@ class BlogTest(TestCase):
         
     def test_creation(self):
         blog = self.user.blog
-        self.assertEqual(blog.title, self.user.username + '\'s blog')
         self.assertEqual(blog.author, self.user)
 
     def test_anonymous_views(self):
@@ -136,9 +136,9 @@ class PostTest(TestCase):
             'manager@test.test', 'manager')
         #permission = Permission.objects.get(codename='change_blog')
         #self.manager_user.user_permissions.add(permission)
-        permission = Permission.objects.get(codename='change_post')
+        permission = Permission.objects.get_by_natural_key('change_post', 'dblog', 'post')
         self.manager_user.user_permissions.add(permission)
-        permission = Permission.objects.get(codename='delete_post')
+        permission = Permission.objects.get_by_natural_key('delete_post', 'dblog', 'post')
         self.manager_user.user_permissions.add(permission)
         self.blog = self.user.blog
         self.post = Post.objects.create(author=self.user, blog=self.blog,
