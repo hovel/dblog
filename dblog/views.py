@@ -77,7 +77,6 @@ class PostList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PostList, self).get_context_data(**kwargs)
-        context['title'] = _('Posts')
         return context
 
 class PostTaggedList(generic.ListView):

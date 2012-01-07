@@ -1,15 +1,17 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.comments.moderation import CommentModerator, moderator
+from django.contrib.comments.models import Comment
+import mptt
 from django.contrib.sites.models import Site
 from django.core.mail import mail_managers, send_mail
 from django.db import models
 from django.template import Context, loader
 from django.utils.translation import ugettext as _
 
-from markdown import markdown
 from tagging.fields import TagField
 from tagging.models import Tag
+from defaults import DBLOG_BODY_RENDER
 
 class Blog(models.Model):
     author = models.OneToOneField('auth.User', verbose_name=_('Author'),
@@ -26,13 +28,12 @@ class Blog(models.Model):
 
 class Post(models.Model):
     author = models.ForeignKey('auth.User', verbose_name=_('Author'),
-        help_text=_('Author association.'))
+        help_text=_('Author association.'), related_name='blog_posts')
     blog = models.ForeignKey(Blog, blank=True, null=True, verbose_name=_('Blog'),
         help_text=_('Blog association.'))
     title = models.CharField(max_length=64, verbose_name=_('Title'),
         help_text=_('Displayed on the browser tab and in the beginning of the article.'))
-    body = models.TextField(verbose_name=_('Body'),
-        help_text=_('For markup syntax markdown.'))
+    body = models.TextField(verbose_name=_('Body'))
     body_html = models.TextField(verbose_name=_('Body HTML'),
         help_text=_('Ready to display text on the page.'))
     tags = TagField(verbose_name=_('Tags'),
@@ -63,7 +64,7 @@ class Post(models.Model):
         return 'post:detail', [str(self.id),]
 
     def save(self, *args, **kwargs):
-        self.body_html = markdown(self.body, safe_mode='remove')
+        self.body_html = DBLOG_BODY_RENDER(self.body)
         super(Post, self).save(*args, **kwargs)
 
     def set_tags(self, tags):
@@ -80,7 +81,7 @@ class PostModerator(CommentModerator):
         if self.email_notification:
             recipient = [content_object.author.email,]
             site = Site.objects.get_current()
-            t = loader.get_template('comments/comment_notification_email.txt')
+            t = loader.get_template('dblog/comments/comment_notification_email.txt')
             c = Context({ 'comment': comment,
                         'site': site,
                         'content_object': content_object })
@@ -94,7 +95,7 @@ class PostModerator(CommentModerator):
         if request.user == content_object.author:
             return False
         return True
-            
+
 # Comments moderation
 moderator.register(Post, PostModerator)
 

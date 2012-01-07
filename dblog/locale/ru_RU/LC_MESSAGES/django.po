@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-13 15:27+0400\n"
+"POT-Creation-Date: 2012-01-08 03:20+0400\n"
 "PO-Revision-Date: 2011-08-13 15:32+0400\n"
 "Last-Translator: Vladimir Korsun <korsun.vladimir@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -27,149 +27,291 @@ msgstr "Новая запись опубликована"
 msgid "New publications are always with you."
 msgstr "Новые публикации всегда с Вами."
 
-#: models.py:15 models.py:28 templates/dblog/post_detail.html:21
+#: models.py:17 models.py:30 templates/dblog/post_detail.html:23
+#: templates/dblog/user_info.html:3 templates/dblog/comments/list.html:7
 msgid "Author"
 msgstr "Автор"
 
-#: models.py:16 models.py:29
+#: models.py:18 models.py:31
 msgid "Author association."
 msgstr "Ассоциация с автором."
 
-#: models.py:17 models.py:32
+#: models.py:19 models.py:34
 msgid "Title"
 msgstr "Название"
 
-#: models.py:18
+#: models.py:20
 msgid "Your blog name."
 msgstr "Название Вашего блога."
 
-#: models.py:30
+#: models.py:32
 #, fuzzy
 msgid "Blog"
 msgstr "Блоги"
 
-#: models.py:31
+#: models.py:33
 msgid "Blog association."
 msgstr "Ассоциация с блогом."
 
-#: models.py:33
+#: models.py:35
 msgid "Displayed on the browser tab and in the beginning of the article."
 msgstr "Отображается на вкладке браузера и начале статьи."
 
-#: models.py:34
+#: models.py:36
 msgid "Body"
 msgstr "Текст"
 
-#: models.py:35
-msgid "For markup syntax markdown."
-msgstr "Для разметки используется синтаксис markdown."
-
-#: models.py:36
+#: models.py:37
 msgid "Body HTML"
 msgstr "Текст HTML"
 
-#: models.py:37
+#: models.py:38
 msgid "Ready to display text on the page."
 msgstr "Текст отображаемый на странице."
 
-#: models.py:38
+#: models.py:39 templates/dblog/post_detail.html:26
+#: templates/dblog/post_list.html:41 templates/dblog/tag-cloud.html:6
+#: templates/dblog/tags.html:4 templates/dblog/tags.html.py:7
 msgid "Tags"
 msgstr "Тэги"
 
-#: models.py:39
+#: models.py:40
 msgid "Comma separated tags."
 msgstr "Разделенные запятой тэги."
 
-#: models.py:40
+#: models.py:41
 msgid "Created"
 msgstr "Создано"
 
-#: models.py:41
+#: models.py:42
 #, fuzzy
 msgid "Created time."
 msgstr "Создано"
 
-#: models.py:42
+#: models.py:43
 msgid "Changed"
 msgstr "Изменено"
 
-#: models.py:43
-#, fuzzy
-msgid "Changed time."
-msgstr "Изменено"
-
 #: models.py:44
+msgid "Changed time."
+msgstr "Время изменения"
+
+#: models.py:45
 msgid "Is draft"
 msgstr "Это черновик"
 
-#: models.py:45
+#: models.py:46
 msgid "After publishing, you can not make a post draft."
 msgstr "После публикации Вы не сможете сделать пост черновиком."
 
-#: models.py:46
-msgid "Is promoted"
-msgstr "Продвигать"
-
 #: models.py:47
-msgid "Publish this post on front page."
-msgstr "Опубликовать пост на главной странице."
+msgid "Is promoted"
+msgstr "Выделить"
 
-#: models.py:49
+#: models.py:48
+msgid "Publish this post on front page."
+msgstr "Опубликовать пост на главной странице блогов."
+
+#: models.py:50
 msgid "Enable comments"
 msgstr "Включить комментарии"
 
-#: models.py:50
+#: models.py:51
 msgid "Allow user to post comments."
 msgstr "Разрешить пользователям оставлять комментарии."
 
-#: models.py:88
+#: models.py:89
 msgid "New comment posted on"
 msgstr "Новый комментарий оставлен для"
 
-#: models.py:104
+#: models.py:105
 msgid "blog"
 msgstr "блог"
 
-#: models.py:115
+#: models.py:116
 msgid "New post published"
 msgstr "Новая запись опубликована"
 
-#: views.py:66
+#: views.py:70
 msgid "Drafts"
 msgstr "Черновики"
 
-#: views.py:75 templates/dblog/post_list.html:4
-msgid "Posts"
-msgstr "Записи"
-
-#: views.py:89
+#: views.py:98
 msgid "Posts tagged by"
 msgstr "Записи отмеченные"
 
-#: templates/dblog/blog_detail.html:9 templates/dblog/post_form.html:4
-#: templates/dblog/post_list.html:9
-msgid "Create post entry"
-msgstr "Создать запись в блоге"
-
 #: templates/dblog/blog_list.html:4 templates/dblog/blog_list.html.py:7
+#: templates/dblog/post_list.html:10 templates/dblog/post_list.html.py:23
 msgid "Blogs"
 msgstr "Блоги"
 
-#: templates/dblog/post_detail.html:10
-msgid "Manage post"
-msgstr "Управлять записью"
+#: templates/dblog/pagination.html:6
+msgid "previous page"
+msgstr "предыдущая страница"
 
-#: templates/dblog/post_detail.html:13
-msgid "Update post entry"
-msgstr "Обновить запись"
+#: templates/dblog/pagination.html:20
+msgid "next page"
+msgstr "следующая страница"
 
-#: templates/dblog/post_detail.html:20
+#: templates/dblog/post_detail.html:17 templates/dblog/comments/list.html:8
 msgid "Posted"
 msgstr "Опубликовано"
 
-#: templates/dblog/post_form.html:7
+#: templates/dblog/post_detail.html:20
+msgid "Total comments"
+msgstr "Всего комментариев"
+
+#: templates/dblog/post_detail.html:34 templates/dblog/post_list.html:37
+msgid "Comments"
+msgstr "Комментарии"
+
+#: templates/dblog/post_detail.html:41
+msgid "delete"
+msgstr "удалить"
+
+#: templates/dblog/post_detail.html:72
+msgid "Submit"
+msgstr "Отправить"
+
+#: templates/dblog/post_detail.html:75
+msgid "Sorry, but you must be"
+msgstr "Извинте, вы должны"
+
+#: templates/dblog/post_detail.html:75
+msgid "logged in"
+msgstr "войти"
+
+#: templates/dblog/post_detail.html:75
+msgid "to submit comments"
+msgstr "для размещения комментариев"
+
+#: templates/dblog/post_detail.html:85
+msgid "Manage post"
+msgstr "Управлять записью"
+
+#: templates/dblog/post_detail.html:88
+msgid "Update post entry"
+msgstr "Обновить запись"
+
+#: templates/dblog/post_form.html:8 templates/dblog/post_list.html:56
+msgid "Create post entry"
+msgstr "Создать запись в блоге"
+
+#: templates/dblog/post_form.html:11
 msgid "Post entry form"
 msgstr "Форма записи в блоге"
+
+#: templates/dblog/post_list.html:58
+#, fuzzy
+msgid "My drafts"
+msgstr "Это черновик"
+
+#: templates/dblog/comments/approve.html:4
+msgid "Approve a comment"
+msgstr "Принять комментарий"
+
+#: templates/dblog/comments/approve.html:7
+msgid "Really make this comment public?"
+msgstr ""
+
+#: templates/dblog/comments/approve.html:16
+msgid "Approve"
+msgstr ""
+
+#: templates/dblog/comments/approved.html:4
+msgid "Thanks for approving"
+msgstr ""
+
+#: templates/dblog/comments/approved.html:7
+#: templates/dblog/comments/deleted.html:7
+#: templates/dblog/comments/flagged.html:7
+msgid ""
+"Thanks for taking the time to improve the quality of discussion on our site"
+msgstr ""
+
+#: templates/dblog/comments/delete.html:4
+msgid "Remove a comment"
+msgstr ""
+
+#: templates/dblog/comments/delete.html:7
+msgid "Really remove this comment?"
+msgstr ""
+
+#: templates/dblog/comments/delete.html:16
+msgid "Remove"
+msgstr ""
+
+#: templates/dblog/comments/deleted.html:4
+msgid "Thanks for removing"
+msgstr ""
+
+#: templates/dblog/comments/flag.html:4
+msgid "Flag this comment"
+msgstr ""
+
+#: templates/dblog/comments/flag.html:7
+msgid "Really flag this comment?"
+msgstr ""
+
+#: templates/dblog/comments/flag.html:16
+msgid "Flag"
+msgstr ""
+
+#: templates/dblog/comments/flagged.html:4
+msgid "Thanks for flagging"
+msgstr ""
+
+#: templates/dblog/comments/form.html:19
+#: templates/dblog/comments/preview.html:32
+#, fuzzy
+msgid "Post"
+msgstr "Записи"
+
+#: templates/dblog/comments/form.html:20
+#: templates/dblog/comments/preview.html:33
+msgid "Preview"
+msgstr ""
+
+#: templates/dblog/comments/list.html:14
+#, fuzzy
+msgid "No comments."
+msgstr "Включить комментарии"
+
+#: templates/dblog/comments/posted.html:4
+msgid "Thanks for commenting"
+msgstr ""
+
+#: templates/dblog/comments/posted.html:7
+msgid "Thank you for your comment"
+msgstr ""
+
+#: templates/dblog/comments/preview.html:4
+#: templates/dblog/comments/preview.html:12
+msgid "Preview your comment"
+msgstr ""
+
+#: templates/dblog/comments/preview.html:10
+msgid "Please correct the error below"
+msgid_plural "Please correct the errors below"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: templates/dblog/comments/preview.html:15
+#, fuzzy
+msgid "and"
+msgstr "Изменено"
+
+#: templates/dblog/comments/preview.html:15
+msgid "Post your comment"
+msgstr ""
+
+#: templates/dblog/comments/preview.html:15
+msgid "or make changes"
+msgstr ""
+
+#~ msgid "For markup syntax markdown."
+#~ msgstr "Для разметки используется синтаксис markdown."
 
 #~ msgid "Draft posts"
 #~ msgstr "Черновики записей"

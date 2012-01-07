@@ -1,24 +1,95 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends DBLOG_TEMPLATE|default:"base.html" %}
+{% load i18n comments post_tags %}
 
-{% block title %}{{object}} - {{block.super}}{% endblock %}
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ block.super }} » <a href="{% url post:promoted %}">Блоги</a> » <a href="{{ object.blog.get_absolute_url }}">{{ object.blog.title }}</a> »
+{% endblock %}
 
 {% block content %}
-<h1>{{object}}</h1>
+    <h1 class="title">{{ object.title }}</h1>
 
-{% if perms.post.can_manage %}
-<a href="{% url post:manage object.id %}">{% trans "Manage post" %}</a>
-{% else %}
-    {% if user == object.author %}
-    <a href="{% url post:update object.id %}">{% trans "Update post entry" %}</a>
+    {{object.body_html|safe}}
+
+    <div class="meta">
+        {% get_comment_count for object as comment_count %}
+        {% trans "Posted" %}:
+        {{object.created|date:"SHORT_DATETIME_FORMAT"}}
+
+        {% trans "Total comments" %}:
+        <a href="{% url post:detail object.id %}#comments">{{comment_count}}</a><br />
+
+        {% trans "Author" %}:
+        <a href="{{ object.author.get_profile.get_absolute_url }}">{{object.author}}</a>
+
+        {% trans "Tags" %}:
+        {% for tag in object.get_tags %}
+            <a href="{% url post:tagged tag %}">{{tag}}</a>
+            {% if not forloop.last %},{% endif %}
+        {% endfor %}
+    </div>
+
+    <div id="comments">
+        <h4>{% trans "Comments" %}:</h4>
+        {% get_comment_list for object as comment_list %}
+        {% for comment in comment_list %}
+            <div class='comment {% cycle "odd" "even"%}'>
+            <div id="c{{ comment.id }}" class="meta">
+                {{ comment.submit_date }} - <a href="{{ comment.user.get_profile.get_absolute_url }}">{{ comment.user.username }}</a>
+            {% if perms.can_moderate_comments %}
+            <a href="{% url comments-delete object.id %}">{% trans "delete" %}</a>
+            {% endif %}
+            </div>
+            <div class='comment-content'>
+                <p>{{ comment.comment }}</p>
+            </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% load comments i18n %}
+    {% if user.is_authenticated %}
+        {% get_comment_form for object as form %}
+        <form action="{% comment_form_target %}" method="post">
+        {% csrf_token %}
+        {% if next %}<input name="next" type="hidden" value="{{ next }}" />{% endif %}
+        {% for field in form %}
+            {% if field.is_hidden %}
+                {{ field }}
+            {% else %}
+                {% if field.name != "name" and field.name != "email" and field.name != "url" %}
+                    {% if field.errors %}{{ field.errors }}{% endif %}
+                    <p
+                            {% if field.errors %} class="error"{% endif %}
+                            {% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
+                        {{ field.label_tag }}<br>{{ field }}
+                    </p>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <input type="hidden" name="next" value="{{ object.get_absolute_url }}" />
+        <input class="submit-post" name="post" type="submit" value="{% trans "Submit" %}" />
+        </form>
+    {% else %}
+    {% trans "Sorry, but you must be" %} <a href='/login/'>{% trans "logged in" %}</a> {% trans "to submit comments" %}.
     {% endif %}
-{% endif %}
 
-{{ object.body_html|safe }}
+{% endblock %}
 
-<div class="meta">
-{% trans "Posted" %}: {{object.created|date:"SHORT_DATETIME_FORMAT"}}
-{% trans "Author" %}: <a href="{{ object.author.get_profile.get_absolute_url }}">{{ object.author }}</a>
-</div>
+
+{% block content-related %}
+    {% include "dblog/user_info.html" %}
+    <ul>
+        {% if perms.post.can_manage %}
+            <li><a href="{% url post:manage object.id %}">{% trans "Manage post" %}</a></li>
+        {% else %}
+            {%if user.id == object.author.id %}
+                <li><a href="{% url post:update object.id %}">{% trans "Update post entry" %}</a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+
+    {{block.super}}
 
 {% endblock %}

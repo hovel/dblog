@@ -1,23 +1,62 @@
-{% extends 'base.html' %}
+{% extends DBLOG_TEMPLATE|default:"base.html" %}
 {% load i18n %}
+{% load comments %}
+{% load tagging_tags %}
 
-{% block title %}{% trans "Posts" %} - {{block.super}}{% endblock %}
+{% block title %}
+    {% if title %}
+        {{ title }}
+    {% else %}
+        {% trans "Blogs" %}
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ block.super }} » <a href="{% url post:promoted %}">Блоги</a>{% if title %} »{% endif %}
+{% endblock %}
 
 {% block content %}
-<h1>{{title}}</h1>
-{% if user.is_authentificated %}
-    <a href="{% url post:create %}">{% trans "Create post entry" %}</a>
-{% endif %}
-<ul class="posts">
-{% for object in object_list %}
-<li>
-<h2><a href="{% url post:detail object.id %}">{{object}}</a>
-<span class="published">{{object.created|date:"SHORT_DATE_FORMAT"}}</span></h2>
-{{object.body_html|safe|truncatewords_html:30}}
-</li>
-{% endfor %}
-</ul>
-
+    <h1>
+        {% if title %}
+            {{ title }}
+        {% else %}
+            {% trans "Blogs" %}
+        {% endif %}
+    </h1>
+    <ul class="posts">
+        {% for object in object_list %}
+            <li>
+                <h2><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h2>
+                {{object.body_html|safe|truncatewords_html:50}}
+                <a class='read-more' href="{{ object.get_absolute_url }}">читать полностью →</a>
+                <div class='meta'>
+                    <span class='user-info'><a href="{{ object.blog.get_absolute_url }}">
+                        {{ object.author.username }}</a></span>
+                    <span class="published">{{object.created|date:"SHORT_DATE_FORMAT"}}</span>
+                    {% get_comment_count for object as comment_count %}
+                    <span class="comment-info">{% trans "Comments" %}: {{ comment_count }}</span>
+                    <span class='entry-tags'>
+                        {% tags_for_object object as tag_list %}
+                        {% if tag_list %}
+                            {% trans "Tags" %}:
+                            {% for tag in tag_list %}
+                                <a href={% url post:tagged tag.name %}>{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 {% include 'dblog/pagination.html' %}
+{% endblock %}
 
+{% block content-related %}
+    <ul>
+    <li><a href='{% url post:create %}'>{% trans "Create post entry" %}</a></li>
+    {% if request.user.is_authenticated %}
+        <li><a href="{% url blog:drafts request.user.blog.id %}">{% trans "My drafts" %}</a></li>
+    {% endif %}
+    </ul>
+    {% include "dblog/tag-cloud.html" %}
 {% endblock %}

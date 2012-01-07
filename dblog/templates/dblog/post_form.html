@@ -1,5 +1,9 @@
-{% extends 'base.html' %}
+{% extends DBLOG_TEMPLATE|default:"base.html" %}
 {% load i18n %}
+
+{% block breadcrumb %}
+    {{ block.super }} » <a href="{% url post:promoted %}">Блоги</a> »
+{% endblock %}
 
 {% block title %}{% trans "Create post entry" %}{% endblock %}
 

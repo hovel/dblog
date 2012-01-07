@@ -2,7 +2,6 @@ from django.conf.urls.defaults import *
 from django.views.generic import TemplateView
 
 from dblog.feeds import LatestPostsFeed
-from dblog.models import Post
 from dblog.views import *
 
 from tagging.views import tagged_object_list

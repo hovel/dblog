@@ -3,7 +3,7 @@
     {% if forloop.first %}
         {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
     {% endif %}
-
+    <p>
     {% if field.errors %}<div class="errors"><ul>{{field.errors}}</ul></div>{% endif %}
     <div class="label">{{field.label_tag}}:</div>
     <div class="field">{{field}}</div>
