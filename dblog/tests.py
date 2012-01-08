@@ -6,7 +6,7 @@ from django.test.client import Client
 from dblog.models import Blog, Post
 from dblog.forms import *
 from django.utils.translation import ugettext as _
-
+import defaults
 
 class BlogTest(TestCase):
     def setUp(self):
@@ -149,7 +149,6 @@ class PostTest(TestCase):
         self.assertEqual(self.post.blog, self.blog)
         self.assertEqual(self.post.title, 'My title')
         self.assertEqual(self.post.body, 'My *body*.')
-        self.assertEqual(self.post.body_html, '<p>My <em>body</em>.</p>')
         self.assertTrue(self.post.is_draft)
         self.assertFalse(self.post.is_promoted)
         self.assertTrue(self.post.enable_comments)

@@ -7,12 +7,11 @@ setup(
     version = '1.0',
     packages = find_packages(),
     include_package_data = True,
-    package_data = {'': ['dblog/templates']},
     package_dir={'dblog': 'dblog'},
     package_data = {'dblog': [
         'templatetags/*',
         'urls/*',
-        'templates/*/*',
+        'templates/*/*/*',
         'fixtures/*',
         'locale/*/*',
         'migrations/*']},
