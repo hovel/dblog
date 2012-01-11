@@ -92,7 +92,7 @@ class PostModerator(CommentModerator):
                 recipient, fail_silently=True)
 
     def moderate(self, comment, content_object, request):
-        if request.user == content_object.author:
+        if request.user.is_authenticated():
             return False
         return True
 
