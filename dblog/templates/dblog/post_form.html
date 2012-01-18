@@ -2,14 +2,26 @@
 {% load i18n %}
 
 {% block breadcrumb %}
-    {{ block.super }} » <a href="{% url post:promoted %}">Блоги</a> »
+    <ul class='breadcrumb'>
+        {% if request.path != '/' %}
+            <li><a href="/">{% trans "Home" %}</a> <span class="divider">/</span></li>
+        {% endif %}
+        <li><a href="{% url post:promoted %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
+        <li>
+            {% if object %}
+                {% trans "Edit post" %}
+            {% else %}
+                {% trans "Create post" %}
+            {% endif %}
+        </li>
+    </ul>
 {% endblock %}
 
 {% block title %}{% trans "Create post entry" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Post entry form" %}</h1>
-<form action="." method="post">
+<h1>{% trans "Create post entry" %}</h1>
+<form action="." method="post" class='post-form'>
 {% include 'dblog/form.html' %}
 </form>
 {% endblock %}

@@ -4,12 +4,11 @@
         {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
     {% endif %}
     <p>
-    {% if field.errors %}<div class="errors"><ul>{{field.errors}}</ul></div>{% endif %}
-    <div class="label">{{field.label_tag}}:</div>
-    <div class="field">{{field}}</div>
-    <div class="help_text">{{field.help_text}}</div>
+    {% if field.errors %}<ul class="errorlist">{{field.errors}}</ul>{% endif %}
+    {{field.label_tag}}
+    {{field}}
+    <span class='helptext'>{{field.help_text}}</span>
 {% endfor %}
 <div class="submit">
     <input type="submit" />
-    <input type="reset" />
 </div>

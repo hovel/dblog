@@ -4,7 +4,14 @@
 {% block title %}{{ object.title }}{% endblock %}
 
 {% block breadcrumb %}
-    {{ block.super }} » <a href="{% url post:promoted %}">Блоги</a> » <a href="{{ object.blog.get_absolute_url }}">{{ object.blog.title }}</a> »
+    <ul class='breadcrumb'>
+        {% if request.path != '/' %}
+            <li><a href="/">{% trans "Home" %}</a> <span class="divider">/</span></li>
+        {% endif %}
+        <li><a href="{% url post:promoted %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
+        <li><a href="{{ object.blog.get_absolute_url }}">{{ object.blog.title }}</a> <span class="divider">/</span></li>
+        <li>{{ object.title }}</li>
+    </ul>
 {% endblock %}
 
 {% block content %}
@@ -51,7 +58,7 @@
     {% load comments i18n %}
     {% if user.is_authenticated %}
         {% get_comment_form for object as form %}
-        <form action="{% comment_form_target %}" method="post">
+        <form action="{% comment_form_target %}" method="post" class="comment-form">
         {% csrf_token %}
         {% if next %}<input name="next" type="hidden" value="{{ next }}" />{% endif %}
         {% for field in form %}
@@ -72,7 +79,7 @@
         <input class="submit-post" name="post" type="submit" value="{% trans "Submit" %}" />
         </form>
     {% else %}
-    {% trans "Sorry, but you must be" %} <a href='/login/'>{% trans "logged in" %}</a> {% trans "to submit comments" %}.
+    {% trans "Sorry, but you must be" %} <a href='{% url auth_login %}'>{% trans "logged in" %}</a> {% trans "to submit comments" %}.
     {% endif %}
 
 {% endblock %}

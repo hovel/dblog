@@ -12,7 +12,19 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    {{ block.super }} » <a href="{% url post:promoted %}">Блоги</a>{% if title %} »{% endif %}
+    <ul class='breadcrumb'>
+        {% if request.path != '/' %}
+            <li><a href="/">{% trans "Home" %}</a> <span class="divider">/</span></li>
+        {% endif %}
+        <li><a href="{% url post:promoted %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
+        <li>
+            {% if title %}
+                {{ title }}
+            {% else %}
+                {% trans "Promoted posts" %}
+            {% endif %}
+        </li>
+    </ul>
 {% endblock %}
 
 {% block content %}
