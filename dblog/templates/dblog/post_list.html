@@ -16,7 +16,7 @@
         {% if request.path != '/' %}
             <li><a href="/">{% trans "Home" %}</a> <span class="divider">/</span></li>
         {% endif %}
-        <li><a href="{% url post:promoted %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
+        <li><a href="{% url 'post:promoted' %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
         <li>
             {% if title %}
                 {{ title }}
@@ -52,7 +52,7 @@
                         {% if tag_list %}
                             {% trans "Tags" %}:
                             {% for tag in tag_list %}
-                                <a href={% url post:tagged tag.name %}>{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
+                                <a href={% url 'post:tagged' tag.name %}>{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
                             {% endfor %}
                         {% endif %}
                     </span>
@@ -65,9 +65,9 @@
 
 {% block content-related %}
     <ul>
-    <li><a href='{% url post:create %}'>{% trans "Create post entry" %}</a></li>
+    <li><a href='{% url 'post:create' %}'>{% trans "Create post entry" %}</a></li>
     {% if request.user.is_authenticated %}
-        <li><a href="{% url blog:drafts request.user.blog.id %}">{% trans "My drafts" %}</a></li>
+        <li><a href="{% url 'blog:drafts' request.user.blog.id %}">{% trans "My drafts" %}</a></li>
     {% endif %}
     </ul>
     {% include "dblog/tag-cloud.html" %}

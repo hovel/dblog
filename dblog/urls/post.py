@@ -4,9 +4,8 @@ from django.views.generic import TemplateView
 from dblog.feeds import LatestPostsFeed
 from dblog.views import *
 
-from tagging.views import tagged_object_list
-
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     (r'^$', PostList.as_view(), None, 'promoted'),
     (r'^feed/$', LatestPostsFeed(), None, 'feed' ),
     (r'^create/$', PostCreate.as_view(), None, 'create'),

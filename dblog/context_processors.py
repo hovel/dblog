@@ -5,10 +5,11 @@ __author__ = 'zeus'
 
 import defaults
 
+
 def processor(request):
     context = {}
     for i in (
-        'DBLOG_TEMPLATE',
-        ):
+            'DBLOG_TEMPLATE',
+    ):
         context[i] = getattr(defaults, i, None)
     return context

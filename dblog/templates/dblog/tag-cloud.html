@@ -6,6 +6,6 @@
     <h1>{% trans "Tags" %}</h1>
     {% tag_cloud_for_model dblog.Post as post_tags %}
     {% for tag in post_tags %}
-        <a href={% url post:tagged tag.name %}>{{ tag.name }}</a>
+        <a href={% url 'post:tagged' tag.name %}>{{ tag.name }}</a>
     {% endfor %}
 </div>

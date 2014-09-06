@@ -1,23 +1,23 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseForbidden, Http404
+from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views import generic
 from pure_pagination import Paginator
 
-from dblog.models import Post, Blog
 from dblog.forms import *
 
 from tagging.models import Tag, TaggedItem
+
 
 class BlogList(generic.ListView):
     model = Blog
     paginate_by = 30
     paginator_class = Paginator
+
 
 class BlogUpdate(generic.UpdateView):
     model = Blog
@@ -30,9 +30,10 @@ class BlogUpdate(generic.UpdateView):
     def get_object(self, *args, **kwargs):
         self.object = super(BlogUpdate, self).get_object(*args, **kwargs)
         if not self.object.author.id == self.request.user.id and \
-            not self.request.user.has_perm('dblog.change_blog'):
+                not self.request.user.has_perm('dblog.change_blog'):
             raise Http404
         return self.object
+
 
 class BlogPostList(generic.ListView):
     paginate_by = 30
@@ -48,6 +49,7 @@ class BlogPostList(generic.ListView):
         context['blog'] = self.blog
         context['title'] = self.blog.title
         return context
+
 
 class BlogPostDraftsList(generic.ListView):
     paginate_by = 30
@@ -70,6 +72,7 @@ class BlogPostDraftsList(generic.ListView):
         context['title'] = ''.join([self.blog.title, ' (', _('Drafts'), ')'])
         return context
 
+
 class PostList(generic.ListView):
     queryset = Post.objects.filter(is_draft=False, is_promoted=True)
     paginate_by = 30
@@ -78,6 +81,7 @@ class PostList(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(PostList, self).get_context_data(**kwargs)
         return context
+
 
 class PostTaggedList(generic.ListView):
     paginate_by = 30
@@ -99,6 +103,7 @@ class PostTaggedList(generic.ListView):
         context['tag'] = self.tag
         return context
 
+
 class PostDetail(generic.DetailView):
     model = Post
 
@@ -108,6 +113,7 @@ class PostDetail(generic.DetailView):
             if not self.request.user == self.object.author:
                 raise Http404
         return self.object
+
 
 class PostCreate(generic.CreateView):
     model = Post
@@ -123,6 +129,7 @@ class PostCreate(generic.CreateView):
         self.object.blog = Blog.objects.get(author=self.request.user)
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
 
 class PostUpdate(generic.UpdateView):
     model = Post
@@ -146,6 +153,7 @@ class PostUpdate(generic.UpdateView):
             return dict(tags=','.join([tag.name for tag in tags]))
         return dict()
 
+
 class PostDelete(generic.DeleteView):
     model = Post
 
@@ -157,9 +165,10 @@ class PostDelete(generic.DeleteView):
         self.object = super(PostDelete, self).get_object(*args, **kwargs)
         self.success_url = reverse('blog:detail', args=[self.object.author.blog.id])
         if not self.object.author.id == self.request.user.id and \
-            not self.request.user.has_perm('dblog.delete_post'):
+                not self.request.user.has_perm('dblog.delete_post'):
             raise Http404
         return self.object
+
 
 class PostManage(generic.UpdateView):
     model = Post

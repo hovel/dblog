@@ -3,19 +3,19 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = 'dblog',
-    version = '1.0',
-    packages = find_packages(),
-    include_package_data = True,
+    name='dblog',
+    version='1.0',
+    packages=find_packages(),
+    include_package_data=True,
     package_dir={'dblog': 'dblog'},
-    package_data = {'dblog': [
+    package_data={'dblog': [
         'templatetags/*',
         'urls/*',
         'templates/*/*/*',
         'fixtures/*',
         'locale/*/*',
         'migrations/*']},
-    install_requires = [
+    install_requires=[
         'django',
         'django-pure-pagination'
     ],

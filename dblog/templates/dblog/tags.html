@@ -10,7 +10,7 @@
         <ul class="tags_cloud">
             {% for tag in post_tags %}
                 <li><a style="font-size:{{tag.font_size}}em;line-height:1.1em"
-                       href="{% url post:tagged tag %}">{{tag}}</a></li>
+                       href="{% url 'post:tagged' tag %}">{{tag}}</a></li>
             {% endfor %}
         </ul>
     {% endif %}

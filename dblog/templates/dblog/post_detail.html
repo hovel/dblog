@@ -8,7 +8,7 @@
         {% if request.path != '/' %}
             <li><a href="/">{% trans "Home" %}</a> <span class="divider">/</span></li>
         {% endif %}
-        <li><a href="{% url post:promoted %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
+        <li><a href="{% url 'post:promoted' %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
         <li><a href="{{ object.blog.get_absolute_url }}">{{ object.blog.title }}</a> <span class="divider">/</span></li>
         <li>{{ object.title }}</li>
     </ul>
@@ -25,14 +25,14 @@
         {{object.created|date:"SHORT_DATETIME_FORMAT"}}
 
         {% trans "Total comments" %}:
-        <a href="{% url post:detail object.id %}#comments">{{comment_count}}</a><br />
+        <a href="{% url 'post:detail' object.id %}#comments">{{comment_count}}</a><br />
 
         {% trans "Author" %}:
         <a href="{{ object.author.get_profile.get_absolute_url }}">{{object.author}}</a>
 
         {% trans "Tags" %}:
         {% for tag in object.get_tags %}
-            <a href="{% url post:tagged tag %}">{{tag}}</a>
+            <a href="{% url 'post:tagged' tag %}">{{tag}}</a>
             {% if not forloop.last %},{% endif %}
         {% endfor %}
     </div>
@@ -45,7 +45,7 @@
             <div id="c{{ comment.id }}" class="meta">
                 {{ comment.submit_date }} - <a href="{{ comment.user.get_profile.get_absolute_url }}">{{ comment.user.username }}</a>
             {% if perms.can_moderate_comments %}
-            <a href="{% url comments-delete object.id %}">{% trans "delete" %}</a>
+            <a href="{% url 'comments-delete' object.id %}">{% trans "delete" %}</a>
             {% endif %}
             </div>
             <div class='comment-content'>
@@ -79,7 +79,7 @@
         <input class="submit-post" name="post" type="submit" value="{% trans "Submit" %}" />
         </form>
     {% else %}
-    {% trans "Sorry, but you must be" %} <a href='{% url auth_login %}'>{% trans "logged in" %}</a> {% trans "to submit comments" %}.
+    {% trans "Sorry, but you must be" %} <a href='{% url 'auth_login' %}'>{% trans "logged in" %}</a> {% trans "to submit comments" %}.
     {% endif %}
 
 {% endblock %}
@@ -89,10 +89,10 @@
     {% include "dblog/user_info.html" %}
     <ul>
         {% if perms.post.can_manage %}
-            <li><a href="{% url post:manage object.id %}">{% trans "Manage post" %}</a></li>
+            <li><a href="{% url 'post:manage' object.id %}">{% trans "Manage post" %}</a></li>
         {% else %}
             {%if user.id == object.author.id %}
-                <li><a href="{% url post:update object.id %}">{% trans "Update post entry" %}</a></li>
+                <li><a href="{% url 'post:update' object.id %}">{% trans "Update post entry" %}</a></li>
             {% endif %}
         {% endif %}
     </ul>

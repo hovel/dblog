@@ -6,7 +6,7 @@
         {% if request.path != '/' %}
             <li><a href="/">{% trans "Home" %}</a> <span class="divider">/</span></li>
         {% endif %}
-        <li><a href="{% url post:promoted %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
+        <li><a href="{% url 'post:promoted' %}">{% trans "Blogs" %}</a> <span class="divider">/</span></li>
         <li>
             {% if object %}
                 {% trans "Edit blog" %}
