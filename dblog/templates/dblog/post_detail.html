@@ -28,7 +28,7 @@
         <a href="{% url 'post:detail' object.id %}#comments">{{comment_count}}</a><br />
 
         {% trans "Author" %}:
-        <a href="{{ object.author.get_profile.get_absolute_url }}">{{object.author}}</a>
+        <a href="{{ object.author.profile.get_absolute_url }}">{{object.author}}</a>
 
         {% trans "Tags" %}:
         {% for tag in object.get_tags %}
@@ -43,7 +43,7 @@
         {% for comment in comment_list %}
             <div class='comment {% cycle "odd" "even"%}'>
             <div id="c{{ comment.id }}" class="meta">
-                {{ comment.submit_date }} - <a href="{{ comment.user.get_profile.get_absolute_url }}">{{ comment.user.username }}</a>
+                {{ comment.submit_date }} - <a href="{{ comment.user.profile.get_absolute_url }}">{{ comment.user.username }}</a>
             {% if perms.can_moderate_comments %}
             <a href="{% url 'comments-delete' object.id %}">{% trans "delete" %}</a>
             {% endif %}
