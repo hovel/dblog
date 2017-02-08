@@ -1,5 +1,5 @@
 from django import template
-from django.contrib.comments.models import Comment
+from django_comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 
 from dblog.models import Post

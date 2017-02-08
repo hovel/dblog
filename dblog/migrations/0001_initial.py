@@ -1,104 +1,45 @@
-# encoding: utf-8
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-        
-        # Adding model 'Blog'
-        db.create_table('dblog_blog', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=64)),
-        ))
-        db.send_create_signal('dblog', ['Blog'])
-
-        # Adding model 'Post'
-        db.create_table('dblog_post', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('body', self.gf('django.db.models.fields.TextField')()),
-            ('body_html', self.gf('django.db.models.fields.TextField')()),
-            ('tags', self.gf('tagging.fields.TagField')()),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('changed', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('is_draft', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('is_promoted', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('enable_comments', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal('dblog', ['Post'])
+from django.db import models, migrations
+from django.conf import settings
+import tagging.fields
 
 
-    def backwards(self, orm):
-        
-        # Deleting model 'Blog'
-        db.delete_table('dblog_blog')
+class Migration(migrations.Migration):
 
-        # Deleting model 'Post'
-        db.delete_table('dblog_post')
+    dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
 
-
-    models = {
-        'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
-        },
-        'auth.permission': {
-            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        'auth.user': {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'dblog.blog': {
-            'Meta': {'object_name': 'Blog'},
-            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '64'})
-        },
-        'dblog.post': {
-            'Meta': {'ordering': "['-created']", 'object_name': 'Post'},
-            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
-            'body': ('django.db.models.fields.TextField', [], {}),
-            'body_html': ('django.db.models.fields.TextField', [], {}),
-            'changed': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'enable_comments': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_draft': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_promoted': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'tags': ('tagging.fields.TagField', [], {}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '64'})
-        }
-    }
-
-    complete_apps = ['dblog']
+    operations = [
+        migrations.CreateModel(
+            name='Blog',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(help_text='Your blog name.', max_length=64, verbose_name='Title')),
+                ('author', models.OneToOneField(verbose_name='Author', to=settings.AUTH_USER_MODEL, help_text='Author association.')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Post',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(help_text='Displayed on the browser tab and in the beginning of the article.', max_length=64, verbose_name='Title')),
+                ('body', models.TextField(verbose_name='Body')),
+                ('body_html', models.TextField(help_text='Ready to display text on the page.', verbose_name='Body HTML')),
+                ('tags', tagging.fields.TagField(help_text='Comma separated tags.', max_length=255, verbose_name='Tags', blank=True)),
+                ('created', models.DateTimeField(help_text='Created time.', verbose_name='Created', auto_now_add=True)),
+                ('changed', models.DateTimeField(help_text='Changed time.', verbose_name='Changed', auto_now=True)),
+                ('is_draft', models.BooleanField(default=True, help_text='After publishing, you can not make a post draft.', verbose_name='Is draft')),
+                ('is_promoted', models.BooleanField(default=False, help_text='Publish this post on front page.', verbose_name='Is promoted')),
+                ('enable_comments', models.BooleanField(default=True, help_text='Allow user to post comments.', verbose_name='Enable comments')),
+                ('author', models.ForeignKey(related_name='blog_posts', verbose_name='Author', to=settings.AUTH_USER_MODEL, help_text='Author association.')),
+                ('blog', models.ForeignKey(blank=True, to='dblog.Blog', help_text='Blog association.', null=True, verbose_name='Blog')),
+            ],
+            options={
+                'ordering': ['-created'],
+                'permissions': (('manage_post', 'Can manage post'),),
+            },
+        ),
+    ]

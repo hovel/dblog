@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.comments.moderation import CommentModerator, moderator
-from django.contrib.comments.models import Comment
+from django_comments.moderation import CommentModerator, moderator
+from django_comments.models import Comment
 import mptt
 from django.contrib.sites.models import Site
 from django.core.mail import mail_managers, send_mail
