@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django_comments.moderation import CommentModerator, moderator
 from django_comments.models import Comment
-import mptt
 from django.contrib.sites.models import Site
 from django.core.mail import mail_managers, send_mail
 from django.db import models
@@ -85,9 +84,9 @@ class PostModerator(CommentModerator):
             recipient = [content_object.author.email, ]
             site = Site.objects.get_current()
             t = loader.get_template('dblog/comments/comment_notification_email.txt')
-            c = Context({'comment': comment,
-                         'site': site,
-                         'content_object': content_object})
+            c = {'comment': comment,
+                 'site': site,
+                 'content_object': content_object}
             subject = '[%s] %s "%s"' % (site.name,
                                         _('New comment posted on'), content_object)
             message = t.render(c)
@@ -120,8 +119,8 @@ def post_notify_managers(sender, instance, created, *args, **kwars):
         subject = '[%s] %s: "%s"' % (site.name,
                                      _('New post published'), instance)
         t = loader.get_template('dblog/post_notification_email.txt')
-        c = Context({'instance': instance,
-                     'site': site})
+        c = {'instance': instance,
+             'site': site}
         message = t.render(c)
         mail_managers(subject, message, fail_silently=True)
 

@@ -1,11 +1,10 @@
-from django.conf.urls import *
+from django.conf.urls import url
 
 from dblog.views import *
 
-urlpatterns = patterns('',
-    (r'^$', BlogList.as_view(), None, 'list'),
-    (r'^(?P<pk>\d+)/$', BlogPostList.as_view(), None, 'detail'),
-    (r'^(?P<pk>\d+)/drafts/$', BlogPostDraftsList.as_view(), None, 'drafts'),
-    (r'^(?P<pk>\d+)/update/$', BlogUpdate.as_view(), None, 'update'),
-)
-
+urlpatterns = [
+    url(r'^$', BlogList.as_view(), None, 'list'),
+    url(r'^(?P<pk>\d+)/$', BlogPostList.as_view(), None, 'detail'),
+    url(r'^(?P<pk>\d+)/drafts/$', BlogPostDraftsList.as_view(), None, 'drafts'),
+    url(r'^(?P<pk>\d+)/update/$', BlogUpdate.as_view(), None, 'update'),
+]

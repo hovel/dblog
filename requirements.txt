@@ -1,6 +1,5 @@
-Django>=1.8,<1.9
-django-contrib-comments==1.7.3
-django-mptt==0.8.7
--e git+https://github.com/hovel/django-pure-pagination.git@44a0567d3982408055291a968fd9b5cc5ced0834#egg=django_pure_pagination
-django-tagging==0.4.5
-Markdown==2.6.8
+Django>=1.11,<2.0
+django-contrib-comments==1.8.0
+-e git+https://github.com/hovel/django-pure-pagination.git@1bab7842cd3f50346fe778ae00212718a3863a4e#egg=django_pure_pagination
+django-tagging==0.4.6
+Markdown==2.6.10
